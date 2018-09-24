@@ -25,10 +25,7 @@
 	</style>
 </head>
 <body>
-<div class="row">
-	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href=documentation.html>Documentation<html></html></h3>
-  </div>
-<class="container-fluid">
+
   
 
   <div class="row">
@@ -52,6 +49,14 @@
       //.call(d3.zoom().on("zoom", function() {svgContainer.attr("transform", d3.event.transform)}))
       .append("g");
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	//To draw street map  
 	
 	d3.json('data/streets.json',function(error, streets) {
@@ -63,15 +68,7 @@
 					.interpolate("linear"); 
 					
 			lineCoords(data);
-	 // set projection
-	
-    //var projection = d3.geoMercator().scale(1200).center([ 20, 8.5 ])
-
-    // set projection parameters
-    //projection.scale(1200).center([ 20, 8.5 ])
-	// create path variable
-    //var geoPath = d3.geoPath().projection(projection);
-
+			
 			var svgPath = svgContainer
 				//.attr("d", geoPath(lineCoords)).style("stroke", "#1c9099").attr("vector-effect", "non-scaling-stroke")
 				//.attr("x", "-20px")
@@ -99,14 +96,13 @@
 					//var svgpump = svgContainer
 					//.append('circle')
 					.style('fill', 'red')
-					.attr('r', 7)
+					.attr('r', 10)
 					.attr("stroke", 'grey')
 					.attr("stroke-opacity",0.8);
 				//svgpump.attr("d", pumpcoords(data))
 					//.attr('cx', function(d) {return d.x*30; })
 					//.attr('cx', function(d) {return height-d.y*30; });
-					});
-					
+					});			
 </script>
 				
 </body>

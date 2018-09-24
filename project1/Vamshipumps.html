@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project 1 - John Snow Streets Map</title>
+	<script type="text/javascript" src="https://d3js.org//d3.v3.min.js"></script>
+	<style>
+    	text { 
+			font-family: Arial; 
+			font-size: 15px;
+		}
+		.axis path, .axis line {
+			fill: none;
+			stroke: black;
+			shape-rendering: crispEdges;
+		}
+		.tick text {
+			fill: black;
+			font-size: 11px;
+		}
+
+		rect {
+			stroke: white;
+		}
+	</style>
+</head>
+<body>
+
+	<svg id="main" width="600" height="600">
+		<text id='label' x='20' y='20'>Streets Map</text>
+		<g transform="translate(30,40)"></g>
+	</svg>
+
+	
+	<script>
+
+		var CHART_WIDTH = 500;
+		var CHART_HEIGHT = 300;
+		var PUMP_WIDTH = 100;
+		var PUMP_HEIGHT = 200;
+	//	var points =[]
+	//	var pumps = []
+
+			var xScale = d3.scale.linear();
+			var yScale = d3.scale.linear();
+							
+			xScale.domain([3, 20]).range([10, CHART_WIDTH]);       // used fixed domain and range
+			yScale.domain( [5,20]).range( [ CHART_HEIGHT,0]);    // used fixed domain and range
+		
+		function drawMap() 
+		{
+			var pathGenerator = d3.svg.line()
+				.x(function(d) {return xScale(d["x"]);})     								
+				.y(function(d) {return yScale(d["y"]);});
+
+			var g = d3.select('svg').select('g');
+
+            d3.json("streets.json",function(points)
+			{
+			for(var i=0;i<points.length;i++)   // loop to call the path generator multiple times for different sets of the array.
+				{
+				g.append('path')
+    			 .style('fill', 'none')
+    			 .style('stroke', 'steelblue')
+    			 .style('stroke-width', '2px')
+    			 .attr('d', pathGenerator(points[i]));
+				   
+				}
+			});
+			
+			d3.csv("Project1_data/pumps.csv",function(pumps)
+			{
+			   g.selectAll('circle')
+    			.data(pumps)
+    			.enter()
+    			.append('circle')
+    			.style('fill', 'red')
+    			.attr('r', 5)
+    			.attr('cx', function(d) {
+				return xScale(d["x"]); 
+				})
+    			.attr('cy',function(d){
+				return yScale(d["y"]);
+				});
+			
+			
+			});
+			
+		//	d3.csv("Project1_data/pumps.csv",function(Data){
+			    
+		//	var selection = d3.selectAll("svg").select('g').selectAll('rect').data(data);
+		//	selection.enter()
+		//	         .append('rect')
+		//			 .attr("width",PUMP_WIDTH)
+		//			 .attr("height",PUMP_HEIGHT)
+		//			 .attr("x",function{ return xScale(data.x);})
+		//			 .attr("y",{return yScale(data.y);})
+		//			 .attr("fill",'red')
+		//			 ;
+		//	});
+	
+		}
+	
+	
+		drawMap();  // left this "function call" here to call the function
+
+	//	});
+		
+		
+	</script>
+</body>
+
+
+</html>

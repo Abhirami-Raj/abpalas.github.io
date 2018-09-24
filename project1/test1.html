@@ -25,11 +25,10 @@
 	</style>
 </head>
 <body>
-<div class="row">
+<class="container-fluid">
+  <div class="row">
 	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href=documentation.html>Documentation<html></html></h3>
   </div>
-<class="container-fluid">
-  
 
   <div class="row">
 	<div class="col-lg-8" id="main_panel">
@@ -37,77 +36,79 @@
   </div>
 </div>
 	
-
+<svg id="main" width="600" height="600">
+		<text id='label' x='20' y='20'>Streets Map</text>
+		<g transform="translate(30,40)"></g>
+	</svg>
 	
 	<script>
 	var width = 600
 	var height = 600
-	var streets=[];
-      var svgContainer = d3.select("#main_panel")
-      .append("svg")
+	
+	 var svgContainer = d3.select("#main_panel")
+      //.append("svg")
       .attr("width", width)
-      .attr("height", height)//.style("border", "0.5px solid #C0C0C0")
-      .attr("x", "20px")
-      .attr("y", "20px")
+      .attr("height", height);//.style("border", "0.5px solid #C0C0C0")
+   /*  // .attr("x", "20px")
+      //.attr("y", "20px")
       //.call(d3.zoom().on("zoom", function() {svgContainer.attr("transform", d3.event.transform)}))
       .append("g");
+	  */
+	  
+	function drawStreetMap()
+	{
 	
-	//To draw street map  
 	
-	d3.json('data/streets.json',function(error, streets) {
+	
+		d3.json('data/streets.json',function(error, streets) {
 				streets.forEach(function(data){
 					
 					var lineCoords=d3.svg.line()
 					.x(function(d) {return d.x*30;})
 					.y(function(d) {return height-d.y*30;})
-					.interpolate("linear"); 
+					.interpolate("linear");  
 					
-			lineCoords(data);
-	 // set projection
-	
-    //var projection = d3.geoMercator().scale(1200).center([ 20, 8.5 ])
-
-    // set projection parameters
-    //projection.scale(1200).center([ 20, 8.5 ])
-	// create path variable
-    //var geoPath = d3.geoPath().projection(projection);
-
-			var svgPath = svgContainer
+				lineCoords(data);
+				var g = d3.select('svg').select('g');
+				//var svgPath = svgContainer
 				//.attr("d", geoPath(lineCoords)).style("stroke", "#1c9099").attr("vector-effect", "non-scaling-stroke")
 				//.attr("x", "-20px")
 				//.attr("y", "20px")
+				g.selectAll('path')
 				.append("path")
 				.attr('stroke', 'steelblue')
     			.attr('stroke-width', '3px')
-				.attr("fill", "none");
-			svgPath.attr("d", lineCoords(data));
+				.attr("fill", "none")
+				.attr("d", lineCoords(data))
+			//svgPath.attr("d", lineCoords(data));
 			
-			});
+				})
 		});
 		
-	//To insert pumps
-	var g = d3.select('svgContainer').select('g');
-	
-	d3.csv('data/pumps.csv',function(error, pumps) {
-	
-					
-				   svgContainer.selectAll("circle")
+			
+			d3.csv('data/pumps.csv',function(error, pumps) {
+			var g = d3.select('svg').select('g');
+			//var svgpump = svgContainer
+			g.selectAll('circle')
 					.data(pumps)
-					.enter().append("circle")
-					.attr("cx", function(d) { return d.x*30; })
-					.attr("cy", function(d) { return height-d.y*30; })
+					.enter()
+					.append('circle')
 					//var svgpump = svgContainer
 					//.append('circle')
 					.style('fill', 'red')
-					.attr('r', 7)
-					.attr("stroke", 'grey')
-					.attr("stroke-opacity",0.8);
+					.attr('r', 10)
+					.attr('cx', function(d) {return d.x*30; })
+					.attr('cy', function(d) {return height-d.y*30; });
 				//svgpump.attr("d", pumpcoords(data))
-					//.attr('cx', function(d) {return d.x*30; })
-					//.attr('cx', function(d) {return height-d.y*30; });
+					//svgpump.attr('cx', function(d) {return d.x*30; })
+					//svgpump.attr('cy', function(d) {return height-d.y*30; });
 					});
 					
-</script>
-				
+	}
+	drawStreetMap();
+	
+	</script>
 </body>
-</html>
+
+
+</htm
