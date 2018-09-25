@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="row">
-	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href="documentation.html">Documentation</a></h3>
+	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href=documentation.html> </a>Documentation</h3>
  </div>
 <class="container-fluid">
   
@@ -51,7 +51,6 @@
 	 
 	 //d3.select("button").on('click', zoomed);
 	 d3.selectAll('button').on('click', zoomed);
-	 
       var svgContainer = d3.select("#main_panel")
       .append("svg")
       .attr("width", width)

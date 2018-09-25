@@ -26,9 +26,10 @@
 </head>
 <body>
 <div class="row">
-	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href=documentation.html>Documentation<html></html></h3>
-  </div>
-<class="container-fluid">
+	  <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href=documentation.html>Documentation</h3>
+</div>
+
+<div class="container-fluid">
   
 
   <div class="row">
@@ -40,7 +41,22 @@
 
 	
 	<script>
-	var width = 600
+	
+	//ZOOM
+/*	function zoomed() {
+    svgContainer.attr("transform",
+        "translate(" + zoom.translate() + ")" +
+        "scale(" + zoom.scale() + ")"
+    );
+	var zoom = d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoomed); */
+	 var	margin = {top: 30, right: 20, bottom: 30, left: 50},
+	w1 = 370 - margin.left - margin.right,
+	h1 = 300 - margin.top - margin.bottom;
+
+var margin1 = {top: 80, right: 80, bottom: 80, left: 80},
+    w2 = 450 - margin1.left - margin1.right,
+    h2 = 400 - margin1.top - margin1.bottom;
+	var width = 1000
 	var height = 600
 	var streets=[];
       var svgContainer = d3.select("#main_panel")
@@ -49,7 +65,8 @@
       .attr("height", height)//.style("border", "0.5px solid #C0C0C0")
       .attr("x", "20px")
       .attr("y", "20px")
-      //.call(d3.zoom().on("zoom", function() {svgContainer.attr("transform", d3.event.transform)}))
+	//  .call(zoom)
+     // .call(d3.zoom().on("zoom", function() {svgContainer.attr("transform", d3.event.transform)}))
       .append("g");
 	
 	//To draw street map  
@@ -71,7 +88,8 @@
     //projection.scale(1200).center([ 20, 8.5 ])
 	// create path variable
     //var geoPath = d3.geoPath().projection(projection);
-
+			
+	
 			var svgPath = svgContainer
 				//.attr("d", geoPath(lineCoords)).style("stroke", "#1c9099").attr("vector-effect", "non-scaling-stroke")
 				//.attr("x", "-20px")
@@ -79,6 +97,7 @@
 				.append("path")
 				.attr('stroke', 'grey')
     			.attr('stroke-width', '3px')
+				.attr("stroke-opacity",0.8)
 				.attr("fill", "none");
 			svgPath.attr("d", lineCoords(data));
 			
@@ -140,6 +159,176 @@
 					//.attr('cx', function(d) {return d.x*30; })
 					//.attr('cx', function(d) {return height-d.y*30; });
 					});
+					
+	//Bar Chart to plot death days
+	
+		
+		var CHART_WIDTH = 500;
+		var CHART_HEIGHT = 300;
+		var BAR_WIDTH = 10;
+		var MAX_BAR_HEIGHT = 200;
+		var no_of_deaths = [];
+		
+	/*	function drawLineChart() 
+		{
+			var maxValue = d3.max(no_of_deaths);
+			
+			var xScale = d3.scale.linear();
+			var yScale = d3.scale.linear();
+
+			xScale.domain([0, 42]).range([0, CHART_WIDTH]);
+			
+			yScale.domain([100,0]).range([0, CHART_HEIGHT]);
+		
+			var pathGenerator = d3.svg.line()
+				.x(function(d) { return xScale(d.date); })
+				.y(function(d) { return yScale(d.deaths);})
+
+			var g = d3.select('svgContainer').select('g');
+			
+			var xAxis = d3.svg.axis()
+    			.scale(xScale)
+    			.orient('bottom')
+    			.tickFormat(function(d) { return "" + d; })
+
+    		var yAxis = d3.svg.axis()
+    			.scale(yScale)
+    			.orient('left');
+
+
+    		g.append('g')
+    			.attr('class', 'axis')
+    			.attr('transform', 'translate(0,' + CHART_HEIGHT + ')')
+    			.call(xAxis);
+
+    		g.append('g')
+    			.attr('class', 'axis')
+    			.call(yAxis);
+
+    		g.append('path')
+    			.style('fill', 'none')
+    			.style('stroke', 'steelblue')
+    			.style('stroke-width', '3px')
+    			.attr('d', pathGenerator(no_of_deaths));
+
+
+		} */
+		
+	//Plot death days
+// Parse the date / time
+var	parseDate = d3.time.format("%d-%b").parse;
+var formatTime = d3.time.format("%e %B");
+
+// Set the ranges
+var	x = d3.time.scale().range([0, CHART_WIDTH]);
+var	y = d3.scale.linear().range([CHART_HEIGHT, 0]);
+
+// Define the axes
+var	xAxis = d3.svg.axis().scale(x)
+	.orient("bottom").ticks(5);
+
+var	yAxis = d3.svg.axis().scale(y)
+	.orient("left").ticks(5);
+
+// Define the line
+//var	valueline = d3.svg.line()
+//	.x(function(d) { return x(d.date); })
+//	.y(function(d) { return y(d.death); });
+	
+	var g = d3.select('svgContainer').select('g');
+	
+			d3.csv('data/deathdays.csv', function(deathdays) 
+			{
+				deathdays.forEach(function(data){
+			
+				var valueline=d3.svg.line()
+				//d.date = parseDate(d.date);
+				//d.death = +d.death;
+				.x(function(d) { return x(parseDate(d.date)); })
+				.y(function(d) { return y(d.death); });
+				.interpolate("linear"); 
+				
+				valueline(data);
+				
+				//x.domain(d3.extent(deathdays, function(d) {return d.date;}));
+				//y.domain([0, d3.max(deathdays, function(d) {return d.death;})]);
+				
+		svgContainer.append("path")
+					.attr("class", "line")
+					.attr("d", valueline(data))
+					.attr("stroke", "grey")
+					.attr("stroke-width", "2px");
+					//attr("d", lineCoords(data));
+		})
+		});
+	/*	svgContainer.selectAll("dot")
+					.data(deathdays)     
+					.enter()
+					.append("ellipse")
+					.attr("cx", function(d) { return x(d.date); })     
+					.attr("cy", function(d) { return y(d.death); })
+					.attr("rx", 3.5) 
+					.attr("ry", 3.5)
+					.style("fill", "white") 
+					.attr("stroke", 'steelblue')
+         
+			});	*/
+			
+		/*	for (var i=0; i<data.length; i++)
+			{
+				var record = data[i];
+				
+				// loop through all years, from 19-Aug to 29-Sept
+				for (var y=19-Aug; y<=29-Sept; y++) 
+				{
+					var value = record[y];
+					var object = {
+						date: y,
+						deaths: +value
+					};
+
+					no_of_deaths.push(object);
+				}
+			}
+			drawLineChart();
+
+		});  */
+		
+		
+		/*function drawBarChart() 
+		{
+			
+
+			//var maxValue = d3.max(energyProduction);
+			var pathGenerator = d3.svg.line()
+				.x(function(d) {return xScale(d["x"]);})     								
+				.y(function(d) {return yScale(d["y"]);});
+
+		
+		var g = d3.select('svgContainer').select('g');
+	
+	d3.csv('data/deathdays.csv',function(error, deathdays) {
+	
+			for(var i=0;i<deathdays.length;i++)   // loop to call the path generator multiple times for different sets of the array.
+				{
+				g.append('path')
+    			 .style('fill', 'none')
+    			 .style('stroke', 'steelblue')
+    			 .style('stroke-width', '2px')
+    			 .attr('d', pathGenerator(deathdays[i]));
+				   
+				}
+				});
+				
+		}
+		drawBarChart(); */
+		
+				/*svgContainer.selectAll("rect")
+					.data(deathdays)
+					.enter()
+					.append("rect")
+					.attr("x", function(d) { return d.date; })
+					.attr("y", function(d) { return height-d.deaths; })	*/
 					
 	/*d3.csv('data/pumps.csv',function(error, pumps) {
 				pumps.forEach(function(data){
