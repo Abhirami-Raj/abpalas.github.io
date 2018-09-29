@@ -75,6 +75,7 @@
 		<g id='street' transform="translate(-50,-20)"></g>
 		<g id='victim' transform="translate(-50,-20)"></g>
 		<g id='pump' transform="translate(-50,-20)"></g>                   // changed this and move this down
+		<g id='victimonclick' transform="translate(-50,-20)"></g>    <!--Changed here-->
 		
 		<g id='deathdays' transform="translate(30,40)"></g>
 </svg>
@@ -94,8 +95,10 @@
 	 var gpump= d3.select('svg').select("#pump");				//  added select('svg') here
 	 var gvictim= d3.select('svg').select("#victim");			//  added select('svg') here
 	 var gdeathdays= d3.select('svg').select("#deathdays");		//  added select('svg') here
+	 var gvictimonclick = d3.select('svg').select("#victimonclick");  // added new group here
 	 
-	var div = d3.select("body").append("div") 
+	 
+	 var div = d3.select("body").append("div") 
     .attr("class", "tooltip")       
     .style("opacity", 0);
 	
@@ -213,10 +216,104 @@
 					//.attr('cx', function(d) {return d.x*30; })
 					//.attr('cx', function(d) {return height-d.y*30; });
 					});  
-				
-				
+					
+					
+function deathagesex_total()
+{
+			var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
+   			var age21f=0; var age21m=0; var age41f=0; var age41m=0; 
+   			var age61f=0; var age61m=0; var age81f=0; var age81m=0;
+
+		for (b=0;b<sdata.length;b++)
+   			{
+   				
+   				var s=Number(sdata[b].age);
+   				switch(s)
+   				{
+
+   					case 0:
+   				
+
+   						if(sdata[b].gender==0)
+   						{
+   							age0m+=1;
+   						}else{
+   							age0f+=1;
+   						}
+
+   						break;
+
+   					case 1:
+
+   						if(sdata[b].gender==0)
+   						{
+   							age11m+=1;
+   						}else{
+   							age11f+=1;
+   						}
+
+   						break;
+
+   					case 2:
+   						if(sdata[b].gender==0)
+   						{
+   							age21m+=1;
+   						}else{
+   							age21f+=1;
+   						}
+
+   						break;
+
+   					case 3:
+   						if(sdata[b].gender==0)
+   						{
+   							age41m+=1;
+   						}else{
+   							age41f+=1;
+   						}
+
+   						break;
+
+   					case 4:
+   						if(sdata[b].gender==0)
+   						{
+   							age61m+=1;
+   						}else{
+   							age61f+=1;
+   						}
+
+   						break;
+
+   					case 5:
+   						if(sdata[b].gender==0)
+   						{
+   							age81m+=1;
+   						}else{
+   							age81f+=1;
+   						}
+
+   						break;
+
+   					default:
+   					    console.log("errorrrr");
+   				}
+
+   			}
+
+var overall = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
+			   {age: 15, male: age11m, female: age11f,age1:11,age2:20},
+   			   {age: 30, male: age21m, female: age21f,age1:21,age2:40},
+			   {age: 50, male: age41m, female: age41f,age1:41,age2:60},
+   			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
+			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
+
+console.log(overall);				
+}	
+			
 //Overall Chart
 var sdata=[];
+
+
 d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 
 		deathagesex.forEach(function(d){
@@ -354,7 +451,7 @@ var canvas2 =d3.select("#main")
 		.attr("height", 3*h1 + margin1.top + margin1.bottom)
 		.append("g")
 		.attr("class", "graph")
-		.attr("transform", "translate(700,50)")
+		.attr("transform", "translate(70,700)")
 		//.attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 		
 var x1 = d3.scale.ordinal().rangeRoundBands([0, w2], .1);
@@ -372,13 +469,15 @@ var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
 		
   x1.domain(overall.map(function(d) { return d.age1+ " to "+ d.age2; }));
 
-  y0.domain([0, d3.max(overall, function(d) { 
-  	if(d.male>d.female)
-  	{return d.male;}else{return d.female;} })]);
+  y0.domain([0, d3.max(overall, function(d) {
+									 if(d.male>d.female){return d.male;}
+                                                    else{return d.female;} 
+											})]);
 
   y1.domain([0, d3.max(overall, function(d) { 
-  	if(d.male>d.female)
-  	{return d.male;}else{return d.female;} })]);
+									if(d.male>d.female){return d.male;}
+									else{return d.female;} 
+									        })]);
 
 	
 	canvas2.append("g")
@@ -410,55 +509,55 @@ bars.append("rect")
       .attr("x", function(d) { return x1(d.age); })
       .attr("width", x1.rangeBand()/2)
       .attr("y", function(d) { return y0(d.male); })
-      .attr("height", function(d,i,j) { return h2 - y0(d.male); }); 
-
+      .attr("height", function(d,i,j) { return h2 - y0(d.male); }) 
+	  //tryyyyyyyyyyyyyyyy
+	  //.on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		
+		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		//})
   bars.append("rect")
       .attr("class", "bar2")
       .attr("x", function(d) { return x1(d.age) + x1.rangeBand()/2; })
       .attr("width", x1.rangeBand() / 2)
       .attr("y", function(d) { return y1(d.female); })
-      .attr("height", function(d,i,j) { return h2 - y1(d.female); }); 
+      .attr("height", function(d,i,j) { return h2 - y1(d.female); }) 
 	  
+	  //Tryyyyyyyy
+	  //.on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		
+		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		//})
+		
+		
+	//Text for female bars	
 	canvas2.selectAll("text.bar")
-  .data(overall)
-.enter().append("text")
-			   .text(function(d) {
-			   		return d.female;
-			   })
-			   .attr("text-anchor", "middle")
-			   .attr("x", function(d, i) {
-			   		return x1(d.age) + x1.rangeBand()/1.35;
-			   		//return i * (w2 / overall.length) + (w2 / overall.length - 1) / 2;
-			   })
-			   .attr("y", function(d) {
-			   		//return h2 - (d * 4) + 14;
-			   		return y1(d.female)-2;
-			   })
-			   .attr("font-family", "sans-serif")
-			   .attr("font-size", "11px")
-			   .attr("fill", "gray");
-
-			 canvas2.selectAll("text.bar")
+		   .data(overall)
+           .enter().append("text")
+						.text(function(d) {return d.female;})
+						.attr("text-anchor", "middle")
+						.attr("x", function(d, i) {return x1(d.age) + x1.rangeBand()/1.35;})
+						.attr("y", function(d) {return y1(d.female)-2;})
+						.attr("font-family", "sans-serif")
+						.attr("font-size", "11px")
+						.attr("fill", "gray");
+						
+	//Text for male bars
+	canvas2.selectAll("text.bar")
   				.data(overall)
 				.enter().append("text")
-			   .text(function(d) {
-			   		return d.male;
-			   })
-			   .attr("text-anchor", "middle")
-			   .attr("x", function(d, i) {
-			   		return x1(d.age) + x1.rangeBand()/4;
-			   		//return i * (w2 / overall.length) + (w2 / overall.length - 1) / 2;
-			   })
-			   .attr("y", function(d) {
-			   		//return h2 - (d * 4) + 14;
-			   		return y0(d.male)-2;
-			   })
-			   .attr("font-family", "sans-serif")
-			   .attr("font-size", "11px")
-			   .attr("fill", "gray");
+						.text(function(d) {return d.male;})
+						.attr("text-anchor", "middle")
+						.attr("x", function(d, i) {return x1(d.age) + x1.rangeBand()/4;})
+						.attr("y", function(d) {return y0(d.male)-2;})
+						.attr("font-family", "sans-serif")
+						.attr("font-size", "11px")
+						.attr("fill", "gray");
 
 				
 });	
+
 
 
 
@@ -503,9 +602,15 @@ var	canvas1 = d3.select("#main")
 		.attr("width", w1 + margin1.left - margin1.right+200)
 		.attr("height", 3*h1 + margin1.top + margin1.bottom)
 		.append("g")
-		.attr("transform", "translate(20,700)");
+		.attr("transform", "translate(100,20)");
 		
-
+/*var canvas2 =d3.select("#main")
+		.append("svg")
+		.attr("width", w1 + margin1.left - margin1.right+200)
+		.attr("height", 3*h1 + margin1.top + margin1.bottom)
+		.append("g")
+		.attr("class", "graph")
+		.attr("transform", "translate(50,700)")  */
 
 
 	d3.csv('data/deathdays.csv', function(data) 
@@ -543,10 +648,7 @@ var	canvas1 = d3.select("#main")
 	canvas1.append("g")
 		.attr("class", "y axis")
 		.call(yAxis)
-		.attr('transform','translate(650,0)')               // <> added the transform attribute here.
-		//.append("text")
-		//.attr("x", -25)
-       // .attr("y", -2)
+		.attr('transform','translate(650,0)')               // <> added the transform attribute here
 		.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 2)
@@ -570,12 +672,31 @@ var	canvas1 = d3.select("#main")
         .attr("ry", 3.5)
         .style("fill", "white") 
         .attr("stroke", 'steelblue')
+		.on("mouseover", function(d,i){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
 		
+		place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		})
+		.on("mouseout", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		
+		place_victims();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		})
+/*	 canvas1.selectAll("dot")  
+        .data(label)     
+		.enter().append("ellipse")                 
+        .attr("cx", function(d) { return d.x; })     
+        .attr("cy", function(d) { return d.y; })
+        .attr("rx", 5) 
+        .attr("ry", 5)
+        .style("fill", function(d) { return d.color; }) 
+        .style("stroke","grey")
+        .style("stroke-width",1); 
 		//.on("click", function(d) {   
          //   div.transition()    
            //     .duration(500)    
              //   .style("opacity", 0)
-            //})
+            //})  */
 			
 	/*	.on("click",function(d, i){
 
@@ -601,8 +722,351 @@ var	canvas1 = d3.select("#main")
 		
 		});
 		
+		var victims = [];    /// ///  added new variable to store victims info 
+	
+	d3.csv('data/deaths_age_sex.csv',function(error, victimsdata) {     //  separated the data read process of victims and plotting
+						victims = 	victimsdata;
+						console.log(victims);
+					    place_victims();
+						});
+						
+						
+	console.log(victims);
+	
+	//var color = d3.scale.category20b();
+	var color = ['#b2182b', '#ef8a62', '#fddbc7', '#d1e5f0', '#67a9cf', '#2166ac']
+		function place_victims(){													//  first function to place victims on load
 		
-/*// To draw Bar Charts
+				   gvictim.selectAll("rect")
+					.data(victims)
+					.enter()
+					.append("rect")
+					.attr("x", function(d) { return d.x*30; })
+					.attr("y", function(d) { return height -d.y*30; })
+					.attr('width', 5)
+					.attr('height',7)
+					.style('fill', function(d)
+					  {
+						if(d.gender == "0")
+						{return "blue";}
+						else
+						{return "lime";}
+					  }
+					)
+					.attr("stroke", 'steelblue')
+					.attr("stroke-opacity",0.8);
+					} 
+					
+		function place_victims_onclick(d,i){									// 2nd function to place the victims on click
+		
+				  gvictim.selectAll("rect").remove();
+				  //canvas2.selectAll().remove();
+				  //canvas2.selectAll("gvictim").remove();
+				  
+				  
+		d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
+
+		deathagesex.forEach(function(d){
+		sdata.push({
+			x: d.x*30,
+			y: height-d.y*30,
+			age: d.age,
+			gender: d.gender
+		});
+		});
+		
+		console.log(sdata);
+
+				  
+				  gvictim.selectAll("rect")
+					.data(sdata)
+					.attr("id","victims")
+					.enter()
+					.append("rect")
+					.attr("x", function(d) { return d.x*30; })
+					.attr("y", function(d) { return height-d.y*30; })
+					.attr('width', 5)
+					.attr('height',7)
+					.style("fill", function(d) { return color[d.age]; })
+					.attr("stroke", "black")
+					.attr("stroke-width", "1px");
+					
+					})
+
+			 div.transition()    
+                .duration(0)    
+                .style("opacity", .9);    
+            div .html(formatTime(d.date) + "<br/>"  + d.deaths + " total:"+l)  
+                .style("left", (d3.event.pageX) + "px")   
+                .style("top", (d3.event.pageY - 28) + "px");
+
+				
+			var l=0;
+
+              for (a=0; a<=i; a++){
+
+                 l= l+ sdata[a].deaths;	  
+				  
+		}
+		}
+		
+	/*	console.log(sdata);		  
+				  gvictim.selectAll("rect")
+					.data(sdata)
+					.attr("id","victims")
+					.enter()
+					.append("rect")
+					.attr("x", function(d) { return d.x*30; })
+					.attr("y", function(d) { return height-d.y*30; })
+					.attr('width', 5)
+					.attr('height',7)
+					.style('fill', function(d)
+					  {
+						if(d.gender == "0")
+						{return "blue";}
+						else
+						{return "lime";}
+					  }
+					)
+					
+
+	
+			
+			//deathagesex_total();
+				
+			var l=0;
+
+              for (a=0; a<=i; a++)
+			  {l= l+ victims[a].death;}
+					
+			var color = d3.scale.category20b();
+			
+		var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
+   			var age21f=0; var age21m=0; var age41f=0; var age41m=0; 
+   			var age61f=0; var age61m=0; var age81f=0; var age81m=0;
+
+		for (b=0;b<sdata.length;b++)
+   			{
+   				
+   				var s=Number(sdata[b].age);
+   				switch(s)
+   				{
+
+   					case 0:
+   				
+
+   						if(sdata[b].gender==0)
+   						{
+   							age0m+=1;
+   						}else{
+   							age0f+=1;
+   						}
+
+   						break;
+
+   					case 1:
+
+   						if(sdata[b].gender==0)
+   						{
+   							age11m+=1;
+   						}else{
+   							age11f+=1;
+   						}
+
+   						break;
+
+   					case 2:
+   						if(sdata[b].gender==0)
+   						{
+   							age21m+=1;
+   						}else{
+   							age21f+=1;
+   						}
+
+   						break;
+
+   					case 3:
+   						if(sdata[b].gender==0)
+   						{
+   							age41m+=1;
+   						}else{
+   							age41f+=1;
+   						}
+
+   						break;
+
+   					case 4:
+   						if(sdata[b].gender==0)
+   						{
+   							age61m+=1;
+   						}else{
+   							age61f+=1;
+   						}
+
+   						break;
+
+   					case 5:
+   						if(sdata[b].gender==0)
+   						{
+   							age81m+=1;
+   						}else{
+   							age81f+=1;
+   						}
+
+   						break;
+
+   					default:
+   					    console.log("errorrrr");
+   				}
+
+   			}
+
+var overall = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
+			   {age: 15, male: age11m, female: age11f,age1:11,age2:20},
+   			   {age: 30, male: age21m, female: age21f,age1:21,age2:40},
+			   {age: 50, male: age41m, female: age41f,age1:41,age2:60},
+   			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
+			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
+
+console.log(overall);
+
+var margin2 = {top: 80, right: 80, bottom: 80, left: 80},
+    w2 = 600 - margin2.left - margin2.right,        // <> updated from 1380 to 600
+    h2 = 400 - margin2.top - margin2.bottom;
+
+var x1 = d3.scale.ordinal().rangeRoundBands([0, w2], .1);
+var y0 = d3.scale.linear().domain([0, 100]).range([h2, 0]);
+var y1 = d3.scale.linear().domain([0, 100]).range([h2, 0]);
+var xAxis1 = d3.svg.axis()
+    .scale(x1)
+    .orient("bottom");
+// create left yAxis
+var yAxisLeft = d3.svg.axis().scale(y0).ticks(4).orient("left");
+// create right yAxis
+var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
+			
+			
+  x1.domain(overall.map(function(d) { return d.age1+ " to "+ d.age2; }));
+
+  y0.domain([0, d3.max(overall, function(d) {
+									 if(d.male>d.female){return d.male;}
+                                                    else{return d.female;} 
+											})]);
+
+  y1.domain([0, d3.max(overall, function(d) { 
+									if(d.male>d.female){return d.male;}
+									else{return d.female;} 
+									        })]);
+
+	
+  canvas2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + h2 + ")")
+      .call(xAxis1)
+      .append("text")
+	  
+
+
+  canvas2.append("g")
+    .attr("class", "y axis axisLeft")
+    .attr("transform", "translate(0,0)")
+    .call(yAxisLeft)
+  .append("text")
+  .attr("x", 10)
+    .attr("y", 15)
+    .attr("dy", "-2em")
+    .style("text-anchor", "end")
+    .text("Deaths");	
+	
+bars = canvas2.selectAll(".bar").data(overall).enter();
+
+bars.append("rect")
+      .attr("class", "bar1")
+      .attr("x", function(d) { return x1(d.age); })
+      .attr("width", x1.rangeBand()/2)
+      .attr("y", function(d) { return y0(d.male); })
+      .attr("height", function(d,i,j) { return h2 - y0(d.male); }) 
+	  //tryyyyyyyyyyyyyyyy
+	 // .on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		
+	//	place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		//})
+  bars.append("rect")
+      .attr("class", "bar2")
+      .attr("x", function(d) { return x1(d.age) + x1.rangeBand()/2; })
+      .attr("width", x1.rangeBand() / 2)
+      .attr("y", function(d) { return y1(d.female); })
+      .attr("height", function(d,i,j) { return h2 - y1(d.female); }) 
+	  
+	  //Tryyyyyyyy
+	 // .on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		
+		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+			
+		//})
+		
+		
+	//Text for female bars	
+	canvas2.selectAll("text.bar")
+		   .data(overall)
+           .enter().append("text")
+						.text(function(d) {return d.female;})
+						.attr("text-anchor", "middle")
+						.attr("x", function(d, i) {return x1(d.age) + x1.rangeBand()/1.35;})
+						.attr("y", function(d) {return y1(d.female)-2;})
+						.attr("font-family", "sans-serif")
+						.attr("font-size", "11px")
+						.attr("fill", "gray");
+						
+	//Text for male bars
+	canvas2.selectAll("text.bar")
+  				.data(overall)
+				.enter().append("text")
+						.text(function(d) {return d.male;})
+						.attr("text-anchor", "middle")
+						.attr("x", function(d, i) {return x1(d.age) + x1.rangeBand()/4;})
+						.attr("y", function(d) {return y0(d.male)-2;})
+						.attr("font-family", "sans-serif")
+						.attr("font-size", "11px")
+						.attr("fill", "gray");
+	
+			
+			
+			
+			
+	})		
+	}		
+			
+			
+			
+   /*     .on("mouseover",function(d, i){
+
+          //d3.select("svg").append("g").selectAll("circle").remove();
+
+          d3.selectAll("circle").remove();
+
+          var l=0;
+
+              for (a=0; a<=i; a++){
+
+                 l= l+ sdata[a].death;
+
+
+
+          }
+
+          div.transition()    
+                .duration(0)    
+                .style("opacity", .9);    
+            div .html(formatTime(d.date) + "<br/>"  + d.death + " total:"+l)  
+                .style("left", (d3.event.pageX) + "px")   
+                .style("top", (d3.event.pageY - 28) + "px"); 
+				
+				*/
+					
+					
+/* To draw Bar Charts
 
 	
 var x1 = d3.scale.ordinal().rangeRoundBands([0, w2], .1);
