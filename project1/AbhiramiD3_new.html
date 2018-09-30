@@ -17,7 +17,7 @@
 			shape-rendering: crispEdges;
 		}
 		.tick text {
-			fill: black;
+			fill: gray;
 			font-size: 11px;
 		}
 
@@ -42,7 +42,7 @@
   fill: steelblue;
 }
 .bar2 {
-  fill: orange;
+  fill: pink;
 }
 
 .bar1:hover {
@@ -69,14 +69,18 @@
 			<button id="zoom_in">+</button>
 			<button id="zoom_out">-</button>
 		</div>
- </div>
+<div class="row">
+	<div class="col-lg-8" id="main_panel">
+	</div>
+</div>
+</div>
 	
-<svg id="main" width="1600" height="1500">
+<svg id="main" width="1200" height="1200">
 		<g id='street' transform="translate(-50,-20)"></g>
 		<g id='victim' transform="translate(-50,-20)"></g>
 		<g id='pump' transform="translate(-50,-20)"></g>                   // changed this and move this down
 		<g id='victimonclick' transform="translate(-50,-20)"></g>    <!--Changed here-->
-		
+		<g id='victim2' transform="translate(-50,-20)"></g>
 		<g id='deathdays' transform="translate(30,40)"></g>
 </svg>
 	
@@ -94,15 +98,19 @@
 	 var gstreet= d3.select('svg').select("#street");         //  added select('svg') here
 	 var gpump= d3.select('svg').select("#pump");				//  added select('svg') here
 	 var gvictim= d3.select('svg').select("#victim");			//  added select('svg') here
+	 var gvictim2 = d3.select('svg').select('#victim2');
 	 var gdeathdays= d3.select('svg').select("#deathdays");		//  added select('svg') here
 	 var gvictimonclick = d3.select('svg').select("#victimonclick");  // added new group here
 	 
 	 
-	 var div = d3.select("body").append("div") 
-    .attr("class", "tooltip")       
-    .style("opacity", 0);
+
 	
-	//var svg=
+	var svg=d3.select("body")
+			  .append("svg")
+			  .attr("width", width)
+			  .attr("height", height)
+			  .call(zoom);
+			  
       var svgContainer = d3.select("body").select("#main")
       .append("svg")
       .attr("width", width)
@@ -175,9 +183,9 @@
 					.attr("cy", function(d) { return height-d.y*30; })
 					//var svgpump = svgContainer
 					//.append('circle')
-					.style('fill', 'red')
+					.style('fill', 'black')
 					.attr('r', 7)
-					.attr("stroke", 'grey')
+					.attr("stroke", 'red')
 					.attr("stroke-opacity",0.8);
 				    //svgpump.attr("d", pumpcoords(data))
 					//.attr('cx', function(d) {return d.x*30; })
@@ -186,7 +194,7 @@
 					
 
 	//var g = d3.select('svgContainer').select('gvictim');
-	
+	var color = ['#b2182b', '#ef8a62', '#fddbc7', '#d1e5f0', '#67a9cf', '#2166ac']
 	d3.csv('data/deaths_age_sex.csv',function(error, victims) {
 	
 					
@@ -196,18 +204,20 @@
 					.append("rect")
 					.attr("x", function(d) { return d.x*30; })
 					.attr("y", function(d) { return height-d.y*30; })
+					.attr("age", function(d) {return d.age;})
 					//var svgpump = svgContainer
 					//.append('circle')
 					.attr('width', 5)
 					.attr('height',7)
-					.style('fill', function(d)
+					.style("fill", function(d) { return color[d.age]; })
+					/*.style('fill', function(d)
 					  {
 						if(d.gender == "0")
 						{return "blue";}
 						else
 						{return "lime";}
 					  }
-					)
+					) */
 					//.style('fill', 'green')
 					//.attr('r', 10)
 					.attr("stroke", 'steelblue')
@@ -218,7 +228,8 @@
 					});  
 					
 					
-function deathagesex_total()
+
+/*function deathagesex_total()
 {
 			var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
    			var age21f=0; var age21m=0; var age41f=0; var age41m=0; 
@@ -300,15 +311,15 @@ function deathagesex_total()
 
    			}
 
-var overall = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
+var totalgrouping = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
 			   {age: 15, male: age11m, female: age11f,age1:11,age2:20},
    			   {age: 30, male: age21m, female: age21f,age1:21,age2:40},
 			   {age: 50, male: age41m, female: age41f,age1:41,age2:60},
    			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
 			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
 
-console.log(overall);				
-}	
+console.log(totalgrouping);				
+}	*/
 			
 //Overall Chart
 var sdata=[];
@@ -338,14 +349,17 @@ d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 					.attr("y", function(d) { return height-d.y*30; })
 					.attr('width', 5)
 					.attr('height',7)
-					.style('fill', function(d)
-					  {
-						if(d.gender == "0")
-						{return "blue";}
-						else
-						{return "lime";}
-					  }
-					)
+					.style('fill', function(d){
+				return "rgb("+ (255-(d["deaths"]*1.5))+",0,0)";
+				});
+					//.style('fill', function(d)
+					  //{
+						//if(d.gender == "0")
+						//{return "blue";}
+						//else
+						//{return "lime";}
+					  //}
+					//)
 	
 
 			var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
@@ -428,14 +442,14 @@ d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 
    			}
 
-var overall = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
+var totalgrouping = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
 			   {age: 15, male: age11m, female: age11f,age1:11,age2:20},
    			   {age: 30, male: age21m, female: age21f,age1:21,age2:40},
 			   {age: 50, male: age41m, female: age41f,age1:41,age2:60},
    			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
 			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
 
-console.log(overall);
+console.log(totalgrouping);
 
 
 //for bar chart
@@ -447,11 +461,11 @@ var margin2 = {top: 80, right: 80, bottom: 80, left: 80},
 	
 var canvas2 =d3.select("#main")
 		.append("svg")
-		.attr("width", w1 + margin1.left - margin1.right+200)
-		.attr("height", 3*h1 + margin1.top + margin1.bottom)
+		.attr("width", w1 + margin2.left - margin2.right+200)
+		.attr("height", 3*h1 + margin2.top + margin2.bottom)
 		.append("g")
 		.attr("class", "graph")
-		.attr("transform", "translate(70,700)")
+		.attr("transform", "translate(700,700)")
 		//.attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 		
 var x1 = d3.scale.ordinal().rangeRoundBands([0, w2], .1);
@@ -467,14 +481,14 @@ var yAxisLeft = d3.svg.axis().scale(y0).ticks(4).orient("left");
 var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");	
 
 		
-  x1.domain(overall.map(function(d) { return d.age1+ " to "+ d.age2; }));
+  x1.domain(totalgrouping.map(function(d) { return d.age1+ " to "+ d.age2; }));
 
-  y0.domain([0, d3.max(overall, function(d) {
+  y0.domain([0, d3.max(totalgrouping, function(d) {
 									 if(d.male>d.female){return d.male;}
                                                     else{return d.female;} 
 											})]);
 
-  y1.domain([0, d3.max(overall, function(d) { 
+  y1.domain([0, d3.max(totalgrouping, function(d) { 
 									if(d.male>d.female){return d.male;}
 									else{return d.female;} 
 									        })]);
@@ -502,7 +516,7 @@ var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
     .style("text-anchor", "end")
     .text("Deaths");	
 	
-bars = canvas2.selectAll(".bar").data(overall).enter();
+bars = canvas2.selectAll(".bar").data(totalgrouping).enter();
 
 bars.append("rect")
       .attr("class", "bar1")
@@ -510,10 +524,11 @@ bars.append("rect")
       .attr("width", x1.rangeBand()/2)
       .attr("y", function(d) { return y0(d.male); })
       .attr("height", function(d,i,j) { return h2 - y0(d.male); }) 
+	  //.attr("fill", function(d) {return "rgb(100,"+ (130 + ((d.age+5)*1.5))+",0)"});
 	  //tryyyyyyyyyyyyyyyy
-	  //.on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+	  //.on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
 		
-		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+		//place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
 			
 		//})
   bars.append("rect")
@@ -522,18 +537,18 @@ bars.append("rect")
       .attr("width", x1.rangeBand() / 2)
       .attr("y", function(d) { return y1(d.female); })
       .attr("height", function(d,i,j) { return h2 - y1(d.female); }) 
-	  
+	  //.attr("fill", function(d) {return "rgb(100,"+ (130 + ((d.age+5)*1.5))+",0)"});
 	  //Tryyyyyyyy
-	  //.on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+	  //.on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
 		
-		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+		//place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
 			
 		//})
 		
 		
 	//Text for female bars	
 	canvas2.selectAll("text.bar")
-		   .data(overall)
+		   .data(totalgrouping)
            .enter().append("text")
 						.text(function(d) {return d.female;})
 						.attr("text-anchor", "middle")
@@ -545,7 +560,7 @@ bars.append("rect")
 						
 	//Text for male bars
 	canvas2.selectAll("text.bar")
-  				.data(overall)
+  				.data(totalgrouping)
 				.enter().append("text")
 						.text(function(d) {return d.male;})
 						.attr("text-anchor", "middle")
@@ -565,12 +580,208 @@ bars.append("rect")
 
 
 
-
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Functions for death plotting--- line chart & Street map
+var deathagesex=[];
+		
+		
+d3.csv("data/deaths_age_sex.csv",function(deaths)
+			{  
+				deathagesex = deaths;
 				
+				
+				deathbyage1();
+			});
+			
+function deathbyage1()
+		{ 
+	  
+	 		var death1 =  gvictim.selectAll('rect')
+				.data(deathagesex)
+				.enter()
+    			.append('rect')
+				.attr("id","deathbyage1")
+				.attr("width",5)
+				.attr("height",7)
+				.attr("x", function(d) { return d.x*30; })
+				.attr("y", function(d) { return height-d.y*30; })
+				//.attr("stroke-width",0.1)
+				.attr("stroke", 'steelblue')
+				.attr("stroke-opacity",0.8)
+				.style("fill", function(d) { return color[d.age]; })
+				/*.attr("fill", function(d){
+				if (d["gender"] == '0')
+				   { 
+				   return "rgb(100,"+ (((d["age"]+5)*1.5)) + 100+",0)";
+					}
+				else
+				   { 
+				   return "rgb(0,"+ (130 + ((d["age"] + 8)*1.5))+",255)";
+					}
+					}); */
+		}
+		
+function deathbyage2(a)
+		{ 
+	     console.log('inside plot deaths2');
+	var death2 =  gvictim2.selectAll('rect')
+			    .data(deathagesex);
+		
+		death2.enter()
+    			.append('rect')
+				.attr("width",function(d,j){if ( j <= a){ return 5;}
+											else {return 0;}
+				})
+	
+				.attr("height",7)
+				.attr("x", function(d) { return d.x*30; })
+				.attr("y", function(d) { return height-d.y*30; })
+				.attr("stroke-width",0.1)
+				.attr("stroke", 'steelblue')
+				.attr("stroke-opacity",0.8)
+				.attr("fill", function(d){
+				if (d["gender"] == '0')
+				   { 
+				   return '#ff6361';
+		//		   return "rgb(120,"+ (130 + (d["age"]*1.5))+",0)";
+					}
+				else
+				   { 
+				   return '#35A0AF';
+		//		   return "rgb(0,"+ (130 + (d["age"]*1.5))+",120)";
+					}
+				});
+		
+		
+		                             
+		}
+		
+	function removedeathbyage1() {
+			
+		 d3.select('#victim').selectAll('*').remove();
+			
+		}
+		
+	function removedeathbyage2() {
+			
+		 d3.select('#victim2').selectAll('*').remove();
+			
+		}
+	
 //for line chart	  
+var	margin1 = {top: 30, right: 20, bottom: 30, left: 50},
+	w1 = 1150 - margin1.left - margin1.right,        // <> updated to 1300
+	h1 = 400 - margin1.top - margin1.bottom;
+	
+//Line Chart to plot death days
+
+// Parse the date / time
+var	parseDate = d3.time.format("%d-%b").parse;
+var formatTime = d3.time.format("%e %B");
+
+// Set the ranges
+var	x = d3.time.scale().range([650, w1]);     // <> updated to 650
+var	y = d3.scale.linear().range([h1, 0]);
+
+// Define the axes
+var	xAxis = d3.svg.axis().scale(x)
+	.orient("bottom").ticks(5);
+
+var	yAxis = d3.svg.axis().scale(y)
+	.orient("left").ticks(8);
+	
+var	line = d3.svg.line()
+.x(function(d) { return x(d.date); })
+.y(function(d) { return y(d.deaths); });
+
+// svg for line chart	
+var	canvas1 = d3.select("#main")
+		.append("svg")
+		.attr("width", w1 + margin1.left - margin1.right+200)
+		.attr("height", 3*h1 + margin1.top + margin1.bottom)
+		.append("g")
+		.attr("transform", "translate(40,20)");
+		
+
+	d3.csv('data/deathdays.csv', function(data) 
+		{
+		data.forEach(function(d) 
+		{
+		
+		var totalVals = data.length;
+			d.date = parseDate(d.date);
+			d.deaths = +d.deaths;
+			d.age=+d.age;
+			d.gender=+d.gender;
+		});
+		
+
+		
+	//Scale the data	
+		x.domain(d3.extent(data, function(d) {return d.date;}));
+		y.domain([0, d3.max(data, function(d) {return d.deaths;})]);
+		
+	// Add the X Axis
+	canvas1.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(100," + h1 + ")")
+		.call(xAxis)
+		.append("text")
+                .attr("transform", "translate(600,10)")
+                .attr("x", 300)
+                .attr("dy", "2em")
+                .style("text-anchor", "end")
+                .text("TimeLine of number of deaths over a period of time");;
+
+	// Add the Y Axis
+	canvas1.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.attr('transform','translate(650,0)')               // <> added the transform attribute here
+		.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 2)
+                .attr("dy", "-3em")
+                .style("text-anchor", "end")
+                .text("Number of deaths");;		
+		
+	// Add the path.
+	canvas1.append("path")
+		.attr("class", "line")
+		.attr("d", line(data))
+		.attr("stroke", "grey")
+   		.attr("stroke-width", "2px");
+		
+	canvas1.selectAll("dot")  
+        .data(data)     
+		.enter().append("ellipse")                 
+        .attr("cx", function(d) { return x(d.date); })     
+        .attr("cy", function(d) { return y(d.deaths); })
+        .attr("rx", 5) 
+        .attr("ry", 5)
+        .style("fill", "red") 
+        .attr("stroke", 'steelblue')
+		.on("mouseover", function(d,i){
+					d3.select(this).attr('fill','green');
+					count = d3.sum(data,function(data,j)              
+					{ if (j <= i)
+						{ return data["deaths"]
+						}
+					});
+					
+					removedeathbyage1();
+					deathbyage2(count - 1);
+		  
+					})
+					
+		.on("mouseout", function(d,i){
+					removedeathbyage2();
+					deathbyage1();
+		  
+					});
+		})		
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////				
+/*//for line chart	  
 var	margin1 = {top: 30, right: 20, bottom: 30, left: 50},
 	w1 = 1300 - margin1.left - margin1.right,        // <> updated to 1300
 	h1 = 400 - margin1.top - margin1.bottom;
@@ -604,29 +815,19 @@ var	canvas1 = d3.select("#main")
 		.append("g")
 		.attr("transform", "translate(100,20)");
 		
-/*var canvas2 =d3.select("#main")
-		.append("svg")
-		.attr("width", w1 + margin1.left - margin1.right+200)
-		.attr("height", 3*h1 + margin1.top + margin1.bottom)
-		.append("g")
-		.attr("class", "graph")
-		.attr("transform", "translate(50,700)")  */
-
 
 	d3.csv('data/deathdays.csv', function(data) 
 		{
 		data.forEach(function(d) 
 		{
+		
 			d.date = parseDate(d.date);
 			d.deaths = +d.deaths;
+			d.age=+d.age;
+			d.gender=+d.gender;
 		});
 		
-/*	div.transition()    
-                .duration(0)    
-                .style("opacity", .9);    
-            //div .html(formatTime(d.date) + "<br/>"  + d.deaths + " total:"+l)  
-                .style("left", (d3.event.pageX) + "px")   
-                .style("top", (d3.event.pageY - 28) + "px");  */
+
 		
 	//Scale the data	
 		x.domain(d3.extent(data, function(d) {return d.date;}));
@@ -672,14 +873,14 @@ var	canvas1 = d3.select("#main")
         .attr("ry", 3.5)
         .style("fill", "white") 
         .attr("stroke", 'steelblue')
-		.on("mouseover", function(d,i){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		.on("mouseover", function(d,i){            /// added on click here, you need to figure out how to erase first plot and show 2nd one.  either  use remove() or visibility().
 		
-		place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+		place_victims_onclick();				///  this function is placing all the 571 points when you click,  need to find a way to count the people till this day and show those in the plot.
 			
 		})
-		.on("mouseout", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+		.on("mouseout", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. either have to use remove() or visibility().
 		
-		place_victims();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+		place_victims();				/// this function is placing all the 571 points when you click,  need to find a way to count the people till this day and show those in the plot.
 			
 		})
 /*	 canvas1.selectAll("dot")  
@@ -718,7 +919,7 @@ var	canvas1 = d3.select("#main")
 
 
 
-          } */
+          } 
 		
 		});
 		
@@ -793,12 +994,12 @@ var	canvas1 = d3.select("#main")
 					
 					})
 
-			 div.transition()    
+			/* div.transition()    
                 .duration(0)    
                 .style("opacity", .9);    
             div .html(formatTime(d.date) + "<br/>"  + d.deaths + " total:"+l)  
                 .style("left", (d3.event.pageX) + "px")   
-                .style("top", (d3.event.pageY - 28) + "px");
+                .style("top", (d3.event.pageY - 28) + "px"); 
 
 				
 			var l=0;
@@ -808,7 +1009,7 @@ var	canvas1 = d3.select("#main")
                  l= l+ sdata[a].deaths;	  
 				  
 		}
-		}
+		} */
 		
 	/*	console.log(sdata);		  
 				  gvictim.selectAll("rect")
@@ -921,14 +1122,14 @@ var	canvas1 = d3.select("#main")
 
    			}
 
-var overall = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
+var totalgrouping = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
 			   {age: 15, male: age11m, female: age11f,age1:11,age2:20},
    			   {age: 30, male: age21m, female: age21f,age1:21,age2:40},
 			   {age: 50, male: age41m, female: age41f,age1:41,age2:60},
    			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
 			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
 
-console.log(overall);
+console.log(totalgrouping);
 
 var margin2 = {top: 80, right: 80, bottom: 80, left: 80},
     w2 = 600 - margin2.left - margin2.right,        // <> updated from 1380 to 600
@@ -946,14 +1147,14 @@ var yAxisLeft = d3.svg.axis().scale(y0).ticks(4).orient("left");
 var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
 			
 			
-  x1.domain(overall.map(function(d) { return d.age1+ " to "+ d.age2; }));
+  x1.domain(totalgrouping.map(function(d) { return d.age1+ " to "+ d.age2; }));
 
-  y0.domain([0, d3.max(overall, function(d) {
+  y0.domain([0, d3.max(totalgrouping, function(d) {
 									 if(d.male>d.female){return d.male;}
                                                     else{return d.female;} 
 											})]);
 
-  y1.domain([0, d3.max(overall, function(d) { 
+  y1.domain([0, d3.max(totalgrouping, function(d) { 
 									if(d.male>d.female){return d.male;}
 									else{return d.female;} 
 									        })]);
@@ -978,7 +1179,7 @@ var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
     .style("text-anchor", "end")
     .text("Deaths");	
 	
-bars = canvas2.selectAll(".bar").data(overall).enter();
+bars = canvas2.selectAll(".bar").data(totalgrouping).enter();
 
 bars.append("rect")
       .attr("class", "bar1")
@@ -987,9 +1188,9 @@ bars.append("rect")
       .attr("y", function(d) { return y0(d.male); })
       .attr("height", function(d,i,j) { return h2 - y0(d.male); }) 
 	  //tryyyyyyyyyyyyyyyy
-	 // .on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+	 // .on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
 		
-	//	place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+	//	place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
 			
 		//})
   bars.append("rect")
@@ -1000,16 +1201,16 @@ bars.append("rect")
       .attr("height", function(d,i,j) { return h2 - y1(d.female); }) 
 	  
 	  //Tryyyyyyyy
-	 // .on("mouseover", function(d){            /// <vamshi> added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
+	 // .on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
 		
-		//place_victims_onclick();				/// <vamshi> this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+		//place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
 			
 		//})
 		
 		
 	//Text for female bars	
 	canvas2.selectAll("text.bar")
-		   .data(overall)
+		   .data(totalgrouping)
            .enter().append("text")
 						.text(function(d) {return d.female;})
 						.attr("text-anchor", "middle")
@@ -1021,7 +1222,7 @@ bars.append("rect")
 						
 	//Text for male bars
 	canvas2.selectAll("text.bar")
-  				.data(overall)
+  				.data(totalgrouping)
 				.enter().append("text")
 						.text(function(d) {return d.male;})
 						.attr("text-anchor", "middle")
