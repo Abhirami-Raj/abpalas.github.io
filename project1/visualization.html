@@ -179,8 +179,8 @@ function zoomed() {
     );
 }
 
- var streetnames = [{name:'CEORCE STREET',x:120,y:222,rotate:72},{name:'BREWER STREET',x:355,y:390,rotate:-43},{name:'RECENT STREET',x:235,y:250,rotate:60},{name:'OXFORD STREET',x:298,y:89,rotate:-10},{name:'DEAN STREET',x:490,y:89,rotate:66},{name:'Work',x:321.5,y:179,rotate:-23},{name:'House',x:325,y:192,rotate:-23},{name:'Brewery',x:411,y:212,rotate:65},{name:'BROAD STREET',x:322,y:250,rotate:-30}]
- var WorkHouse = [{x:311,y:170,w:60,h:38,rotate:-25}]
+ var streetnames = [{name:'CEORCE STREET',x:110,y:222,rotate:72},{name:'BREWER STREET',x:355,y:407,rotate:-43},{name:'REGENT STREET',x:220,y:250,rotate:60},{name:'OXFORD STREET',x:270,y:105,rotate:-10},{name:'DEAN STREET',x:480,y:89,rotate:66},{name:'Work',x:321.5,y:179,rotate:-23},{name:'House',x:325,y:192,rotate:-23},{name:'Brewery',x:411,y:212,rotate:65},{name:'BROAD STREET',x:322,y:260,rotate:-30}]
+ var WorkHouse = [{x:311,y:170,w:50,h:38,rotate:-25}]
  var brewery = [{x:417,y:207.5,w:60,h:16,rotate:62.5}]
 
 	
@@ -217,7 +217,7 @@ function zoomed() {
 			    .attr("d", lineCoords(data));// modified here   			
 			});
 						
-		  var work = gstreet.append("rect")
+		  var work = gpump.append("rect")
           .data(WorkHouse)
           .attr("transform", function (d) 
             { return "rotate(" + d.rotate + " " + d.x + "," + d.y+ ")"; })
@@ -227,9 +227,10 @@ function zoomed() {
           .attr("height", function(d) { return d.h; })
           .attr("stroke", 'grey')
           .attr("stroke-opacity",0.8)
+		  .attr("opacity",0.8)
           .style("fill", "#b8e186"); 
 
-          var brewary = gstreet.append("rect")
+          var brewary = gpump.append("rect")
           .data(brewery)
           .attr("transform", function (d) 
             { return "rotate(" + d.rotate + " " + d.x + "," + d.y+ ")"; })
@@ -237,10 +238,11 @@ function zoomed() {
           .attr("y", function(d) { return d.y; })
           .attr("width", function(d) { return d.w; })
           .attr("height", function(d) { return d.h; })
-          .style("fill", "#ffd615");       
+          .style("fill", "#ffd615")     
+		  .attr("opacity",0.8);	  
 
 //name of streets
-        gstreet.selectAll(".place-label")
+        gpump.selectAll(".place-label")
           .data(streetnames)
           .enter().append("text")
           .attr("class", "place-label")
