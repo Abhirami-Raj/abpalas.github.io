@@ -708,7 +708,7 @@ var	canvas1 = d3.select("#main")
 		data.forEach(function(d) 
 		{
 		
-		var totalVals = data.length;
+		var totaldeaths = data.length;
 			d.date = parseDate(d.date);
 			d.deaths = +d.deaths;
 			d.age=+d.age;
@@ -724,7 +724,7 @@ var	canvas1 = d3.select("#main")
 	// Add the X Axis
 	canvas1.append("g")
 		.attr("class", "x axis")
-		.attr("transform", "translate(100," + h1 + ")")
+		.attr("transform", "translate(10," + h1 + ")")
 		.call(xAxis)
 		.append("text")
                 .attr("transform", "translate(600,10)")
@@ -750,7 +750,7 @@ var	canvas1 = d3.select("#main")
 		.attr("class", "line")
 		.attr("d", line(data))
 		.attr("stroke", "grey")
-   		.attr("stroke-width", "2px");
+   		.attr("stroke-width", "5px");
 		
 	canvas1.selectAll("dot")  
         .data(data)     
@@ -759,7 +759,10 @@ var	canvas1 = d3.select("#main")
         .attr("cy", function(d) { return y(d.deaths); })
         .attr("rx", 5) 
         .attr("ry", 5)
-        .style("fill", "red") 
+		.style('fill', function(d){
+				return "rgb(50,200,"+ (100+(d["deaths"]*1.5))+")";
+				})
+        //.style("fill", "red") 
         .attr("stroke", 'steelblue')
 		.on("mouseover", function(d,i){
 					d3.select(this).attr('fill','green');
