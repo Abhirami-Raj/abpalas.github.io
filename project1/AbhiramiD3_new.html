@@ -106,7 +106,6 @@ body, html {
     <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
       <a href="#about" class="w3-bar-item w3-button"><b>ABOUT PROJECT</b></a>
-	  <a href="#about" class="w3-bar-item w3-button"><b>PROJECT WORK</b></a>
       <a href="#documentation" class="w3-bar-item w3-button"></i><b>DOCUMENTATION</b></a>
       <a href="#video" class="w3-bar-item w3-button"><b></i>VIDEO</b></a>
     </div>
@@ -118,14 +117,8 @@ body, html {
   </div>
 </div>
 
-<div class="row">
-	  
-	 <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp <a href="documentation.html">Documentation</a></h3>
-        <div id="zoom">
-			<button id="zoom_in">+</button>
-			<button id="zoom_out">-</button>
-		</div>
-
+<div class="row"> 
+	 <h3>&nbsp Dr. John Snow's Map of London's 1854 cholera epidemic &nbsp&nbsp&nbsp&nbsp&nbsp</h3>
 </div>
 	
 <svg id="main" width="600" height="500">
@@ -133,8 +126,7 @@ body, html {
 		<g id='victim' transform="translate(-50,-20)"></g>
 		<g id='pump' transform="translate(-50,-20)"></g>                   // changed this and move this down
 		<g id='victimonclick' transform="translate(-50,-20)"></g> 
-		<g id='victim2' transform="translate(-50,-20)"></g>
-		
+		<g id='victim2' transform="translate(-50,-20)"></g>		
 </svg>
 	
 <svg id="main1" width="550" height="500">
@@ -144,14 +136,12 @@ body, html {
 <svg id="main2" width="900" height="600">
 </svg>	
 
-
-	<script>
+<script>
 	
-	var width = 600         // changed this
-	var height = 600        // changed this , <> updated to 600 from 800
-	var streets=[];
+	 var width = 600         // changed this
+	 var height = 600        // changed this , <> updated to 600 from 800
+	 var streets=[];
 	
-   
 	 //d3.select("button").on('click', zoomed);
 	 //d3.selectAll('button').on('click', zoomed);
 	 
@@ -161,7 +151,6 @@ body, html {
 	 var gvictim2 = d3.select('svg').select('#victim2');
 	 var gdeathdays= d3.select('svg').select("#deathdays");		//  added select('svg') here
 	 var gvictimonclick = d3.select('svg').select("#victimonclick");  // added new group here
-	 
 	 
 	 var main = d3.select('#main');
 	 var zoom = d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoomed);
@@ -187,13 +176,11 @@ function zoomed() {
 }
 
  var streetnames = [{name:'CEORCE STREET',x:120,y:222,rotate:72},{name:'BREWER STREET',x:355,y:390,rotate:-43},{name:'RECENT STREET',x:235,y:250,rotate:60},{name:'OXFORD STREET',x:298,y:89,rotate:-10},{name:'DEAN STREET',x:490,y:89,rotate:66},{name:'WORK',x:321.5,y:179,rotate:-23},{name:'HOUSE',x:325,y:192,rotate:-23},{name:'Brewery',x:411,y:212,rotate:65},{name:'BROAD STREET',x:322,y:250,rotate:-30}]
-
  var WorkHouse = [{x:311,y:170,w:45,h:38,rotate:-25}]
-
  var brewery = [{x:417,y:207.5,w:30,h:16,rotate:62.5}]
 
 	
-	//To draw street map  
+//To draw street map  
 	
 	d3.json('data/streets.json',function(error, streets) {
 				streets.forEach(function(data){
@@ -204,10 +191,9 @@ function zoomed() {
 					.interpolate("linear"); 
 					
 			lineCoords(data);
-	 // set projection
-	
+			
+	//set projection
     //var projection = d3.geoMercator().scale(1200).center([ 20, 8.5 ])
-
     // set projection parameters
     //projection.scale(1200).center([ 20, 8.5 ])
 	// create path variable
@@ -226,9 +212,8 @@ function zoomed() {
 				.attr("fill", "none")
 			    .attr("d", lineCoords(data));// modified here   			
 			});
-			
-			
-		   var work = gstreet.append("rect")
+						
+		  var work = gstreet.append("rect")
           .data(WorkHouse)
           .attr("transform", function (d) 
             { return "rotate(" + d.rotate + " " + d.x + "," + d.y+ ")"; })
@@ -259,20 +244,16 @@ function zoomed() {
             { return "rotate(" + d.rotate + " " + d.x + "," + d.y+ ")"; })
           .attr("x", function(d) { return d.x; })
           .attr("y", function(d) { return d.y; })
-       //.attr("transform", function(d) { return "translate(" + d.x+"," +d.y ")"; })
-           .attr("dy", ".35em")
-    //.text("ddddddddd");
-           .text(function(d) { return d.name; });
-		   
+          .attr("dy", ".35em")
+          .text(function(d) { return d.name; });
 		   
 		});
 		
-	//To insert pumps
+//To insert pumps
 	//var g = d3.select('svgContainer').select('gpump');
 	
 	d3.csv('data/pumps.csv',function(error, pumps) {
 	
-					
 				  // svgContainer.selectAll("circle")
 				    gpump.selectAll("circle")
 					.data(pumps)
@@ -291,12 +272,10 @@ function zoomed() {
 					
 					});
 					
-
 	//var g = d3.select('svgContainer').select('gvictim');
 	var color = ['#b2182b', '#ef8a62', '#fddbc7', '#d1e5f0', '#67a9cf', '#2166ac']
 	d3.csv('data/deaths_age_sex.csv',function(error, victims) {
 	
-					
 				   gvictim.selectAll("rect")
 					.data(victims)
 					.enter()
@@ -322,7 +301,7 @@ function zoomed() {
 					.attr("stroke", 'steelblue')
 					.attr("stroke-opacity",0.8);
 				
-				//svgpump.attr("d", pumpcoords(data))
+				    //svgpump.attr("d", pumpcoords(data))
 					//.attr('cx', function(d) {return d.x*30; })
 					//.attr('cx', function(d) {return height-d.y*30; });
 					});  
@@ -330,7 +309,6 @@ function zoomed() {
 			
 //Overall Chart
 var sdata=[];
-
 
 d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 
@@ -368,10 +346,9 @@ d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 					  //}
 					//)
 	
-
-			var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
-   			var age21f=0; var age21m=0; var age41f=0; var age41m=0; 
-   			var age61f=0; var age61m=0; var age81f=0; var age81m=0;
+		var age0m=0; var age0f=0; var age11f=0; var age11m=0; 
+   		var age21f=0; var age21m=0; var age41f=0; var age41m=0; 
+   		var age61f=0; var age61m=0; var age81f=0; var age81m=0;
 
 		for (b=0;b<sdata.length;b++)
    			{
@@ -458,10 +435,8 @@ var totalgrouping = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
 
 console.log(totalgrouping);
 
-
 //for bar chart
 
-//
 var margin2 = {top: 80, right: 80, bottom: 80, left: 80},
     w2 = 600 - margin2.left - margin2.right,        // <> updated from 1380 to 600
     h2 = 400 - margin2.top - margin2.bottom;  
@@ -482,12 +457,13 @@ var y1 = d3.scale.linear().domain([0, 100]).range([h2, 0]);
 var xAxis1 = d3.svg.axis()
     .scale(x1)
     .orient("bottom");
+	
 // create left yAxis
 var yAxisLeft = d3.svg.axis().scale(y0).ticks(4).orient("left");
+
 // create right yAxis
 var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");	
 
-		
   x1.domain(totalgrouping.map(function(d) { return d.age1+ " to "+ d.age2; }));
 
   y0.domain([0, d3.max(totalgrouping, function(d) {
@@ -498,9 +474,7 @@ var yAxisRight = d3.svg.axis().scale(y1).ticks(4).orient("right");
   y1.domain([0, d3.max(totalgrouping, function(d) { 
 									if(d.male>d.female){return d.male;}
 									else{return d.female;} 
-									        })]);
-
-	
+									        })]);	
  canvas2.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + h2 + ")")
@@ -532,27 +506,21 @@ bars.append("rect")
       .attr("y", function(d) { return y0(d.male); })
       .attr("height", function(d,i,j) { return h2 - y0(d.male); }) 
 	  //.attr("fill", function(d) {return "rgb(100,"+ (130 + ((d.age+5)*1.5))+",0)"});
-	  //tryyyyyyyyyyyyyyyy
 	  //.on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
-		
-		//place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
-			
-		//})
-  bars.append("rect")
+	  //place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+	  //})
+	  
+bars.append("rect")
       .attr("class", "bar2")
       .attr("x", function(d) { return x1(d.age) + x1.rangeBand()/2; })
       .attr("width", x1.rangeBand() / 2)
       .attr("y", function(d) { return y1(d.female); })
       .attr("height", function(d,i,j) { return h2 - y1(d.female); }) 
 	  //.attr("fill", function(d) {return "rgb(100,"+ (130 + ((d.age+5)*1.5))+",0)"});
-	  //Tryyyyyyyy
 	  //.on("mouseover", function(d){            ///  added on click here, you need to figure out how to erase first plot and show 2nd one. you will either have to use remove() or visibility().
-		
-		//place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+	  //place_victims_onclick();				///  this function is placing all the 571 points when you click, you need to find a way to count the people till this day and show those in the plot.
+	  //})
 			
-		//})
-		
-		
 	//Text for female bars	
 	canvas2.selectAll("text.bar")
 		   .data(totalgrouping)
@@ -577,15 +545,15 @@ bars.append("rect")
 						.attr("font-size", "11px")
 						.attr("fill", "gray");
 
-//add legend for canvas2-------------------------------------------------------------
-  rectmale= canvas2.selectAll(".bar").data(totalgrouping).enter(); 
-  rectfemale=canvas2.selectAll(".bar").data(totalgrouping).enter(); 
+ //add legend for canvas2-------------------------------------------------------------
+ // rectmale= canvas2.selectAll(".bar").data(totalgrouping).enter(); 
+ // rectfemale=canvas2.selectAll(".bar").data(totalgrouping).enter(); 
   
   var legend = canvas2.append( 'g' )
       .attr( 'class', 'legend' )
       .attr( 'transform', 'translate(450,15)' );
 
-legend.append( 'rect' )
+  legend.append( 'rect' )
       .attr( 'width', 180 )
       .attr( 'height', 66 );
 
@@ -596,27 +564,27 @@ legend.append( 'rect' )
       .style('fill','steelblue')
       .attr( 'transform', 'translate(20,22)' );
 	  
-  var label1 = legend.append( 'g' )  
-  label1.append( 'text' )
+  var label_rectmale = legend.append( 'g' )  
+  label_rectmale.append( 'text' )
       .attr( 'x',40 )
 	  //.attr( 'class', 'bar1' )
 	  .style('fill','steelblue')
       .text( 'Male' )
       .attr( 'dy', '2.5em' );
-  //label1.append( 'path' )
-     // .attr( 'd', deaths );
+      //label1.append( 'path' )
+      //.attr( 'd', deaths );
 	 
-	 var rectfemale = legend.append( 'g' )
+  var rectfemale = legend.append( 'g' )
 	  .append( 'rect' )
 	  .attr( 'width', 10 )
       .attr( 'height', 10 )
       .style('fill','pink')
       .attr( 'transform', 'translate(20,47)' );
 
-  var label2 = legend.append( 'g' )
+  var label_rectfemale = legend.append( 'g' )
       .attr( 'class', 'bar2' )
       .attr( 'transform', 'translate(20,47)' );
-  label2.append( 'text' )
+  label_rectfemale.append( 'text' )
       .attr( 'x', 20 )
       .text( 'Female' )
       .attr( 'dy', '.55em' );
@@ -695,10 +663,7 @@ function deathbyage2(a)
 				   return '#35A0AF';
 		//		   return "rgb(0,"+ (130 + (d["age"]*1.5))+",120)";
 					}
-				});
-		
-		
-		                             
+				});		                             
 		}
 		
 	function removedeathbyage1() {
@@ -759,9 +724,7 @@ var	canvas1 = d3.select("#main1")
 			d.age=+d.age;
 			d.gender=+d.gender;
 		});
-		
-
-		
+				
 	//Scale the data	
 		x.domain(d3.extent(data, function(d) {return d.date;}));
 		y.domain([0, d3.max(data, function(d) {return d.deaths;})]);
@@ -808,7 +771,7 @@ var	canvas1 = d3.select("#main1")
 		.style('fill', function(d){
 				return "rgb(50,200,"+ (100+(d["deaths"]*1.5))+")";
 				})
-        //.style("fill", "red") 
+    //.style("fill", "red") 
         .attr("stroke", 'steelblue')
 		.on("mouseover", function(d,i){
 					d3.select(this).attr('fill','green');
@@ -828,6 +791,219 @@ var	canvas1 = d3.select("#main1")
 					deathbyage1();
 		  
 					});
+										
+//add legend for Street map - pump, workhouse and brewery-------------------------------------------------------------
+	  
+	  var legend2 = canvas1.append( 'g' )
+		  .attr( 'class', 'legend' )
+		  .attr( 'transform', 'translate(-98,350)' );
+
+	  legend2.append( 'rect' )
+		  .attr( 'width', 180 )
+		  .attr( 'height', 66 );
+		  
+	  var label_streets = legend2.append( 'g' )  
+	  label_streets.append( 'text' )
+		  .attr( 'x',18 )
+		  .style('fill','black')
+		  .text( 'Street Map Locations' )
+		  .attr( 'dy', '.5em' );
+
+	  var circlepump = legend2.append( 'g' )
+		  .append( 'circle' )
+		  .attr('r', 7)		
+		  .style('fill','black')
+		  .attr( 'transform', 'translate(25,25)' );
+		  
+	  var label_circlepump = legend2.append( 'g' )  
+	  label_circlepump.append( 'text' )
+		  .attr( 'x',40 )
+		  .style('fill','steelblue')
+		  .text( 'Water Pumps' )
+		  .attr( 'dy', '2.5em' );
+		 
+	  var workhouse = legend2.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#b8e186')
+		  .attr( 'transform', 'translate(18,40)' );
+
+	  var label_workhouse = legend2.append( 'g' )
+		  .attr( 'transform', 'translate(20,40)' );	  
+	  label_workhouse.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Work House' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );
+
+	  var brewery = legend2.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','cyan')
+		  .attr( 'transform', 'translate(18,60)' );
+
+	  var label_brewery = legend2.append( 'g' )
+		  .attr( 'transform', 'translate(20,60)' );	  
+	  label_brewery.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Brewery' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );	
+
+//add legend for Street map - age groups -------------------------------------------------------------
+		  
+	  var legend4 = canvas1.append( 'g' )
+		  .attr( 'class', 'legend' )
+		  .attr( 'transform', 'translate(98,285)' );
+
+	  legend4.append( 'rect' )
+		  .attr( 'width', 180 )
+		  .attr( 'height', 66 );
+		  
+	  var label_agegroup= legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,80)' );	  
+	  label_agegroup.append( 'text' )
+		  .attr( 'x', -2.0 )
+		  .text( 'Street Map Age Groups' )
+		  .style('fill','black')
+		  .attr( 'dy', '-.85em' );
+			
+	  var age010 = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#b2182b')
+		  .attr( 'transform', 'translate(18,80)' );
+
+	  var label010 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,80)' );	  
+	  label010.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age 0-10' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );
+
+	  var age1120 = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#ef8a62')
+		  .attr( 'transform', 'translate(18,100)' );
+
+	  var label1120 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,100)' );	  
+	  label1120.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age 11-20' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );	
+
+	  var age2140 = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#fddbc7')
+		  .attr( 'transform', 'translate(18,120)' );
+
+	  var label2140 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,120)' );	  
+	  label2140.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age 21-40 ' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );
+
+	  var age4160 = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#d1e5f0')
+		  .attr( 'transform', 'translate(18,140)' );
+
+	  var label4160 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,140)' );	  
+	  label4160.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age 41-60' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );	
+
+	  var age6180 = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#67a9cf')
+		  .attr( 'transform', 'translate(18,160)' );
+
+	  var label6180 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,160)' );	  
+	  label6180.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age 61-80' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );
+
+	  var age80  = legend4.append( 'g' )
+		  .append( 'rect' )
+		  .attr( 'width', 15 )
+		  .attr( 'height', 12 )
+		  .style('fill','#2166ac')
+		  .attr( 'transform', 'translate(18,180)' );
+
+	  var label80 = legend4.append( 'g' )
+		  .attr( 'transform', 'translate(20,180)' );	  
+	  label80.append( 'text' )
+		  .attr( 'x', 20 )
+		  .text( 'Age > 80' )
+		  .style('fill','steelblue')
+		  .attr( 'dy', '.78em' );
+
+//add legend for Canvas1 - dotted map -------------------------------------------------------------
+	  
+	  var legend3 = canvas1.append( 'g' )
+		  .attr( 'class', 'legend' )
+		  .attr( 'transform', 'translate(300,350)' );
+
+	  legend3.append( 'rect' )
+		  .attr( 'width', 180 )
+		  .attr( 'height', 66 );
+		  
+	  var label_mouseover = legend3.append( 'g' )  
+	  label_mouseover.append( 'text' )
+		  .attr( 'x',18)
+		  .style('fill','black')
+		  .text( 'Gender on Mouse Over' )
+		  .attr( 'dy', '.5em' );
+
+	  var malevictims = legend3.append( 'g' )
+		  .append( 'circle' )
+		  .attr('r', 7)		
+		  .style('fill','#ff6361')
+		  .attr( 'transform', 'translate(25,25)' );
+		  
+	  var label_malevictims = legend3.append( 'g' )  
+	  label_malevictims.append( 'text' )
+		  .attr( 'x',40 )
+		  .style('fill','#ff6361')
+		  .text( 'Female' )
+		  .attr( 'dy', '2.5em' );	
+		  
+	  var femalevictims = legend3.append( 'g' )
+		  .append( 'circle' )
+		  .attr('r', 7)		
+		  .style('fill','#35A0AF')
+		  .attr( 'transform', 'translate(25,50)' );
+		  
+	  var label_femalevictims = legend3.append( 'g' )  
+	  label_femalevictims.append( 'text' )
+		  .attr( 'x',40 )
+		  .style('fill','#35A0AF')
+		  .text( 'Male' )
+		  .attr( 'dy', '4.5em' );			  
+		 
+					
 		})		
 </script>			
 </body>
