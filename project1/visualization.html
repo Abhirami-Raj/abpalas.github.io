@@ -237,7 +237,7 @@ function zoomed() {
           .attr("y", function(d) { return d.y; })
           .attr("width", function(d) { return d.w; })
           .attr("height", function(d) { return d.h; })
-          .style("fill", "cyan");       
+          .style("fill", "#ffd615");       
 
 //name of streets
         gstreet.selectAll(".place-label")
@@ -845,7 +845,7 @@ var	canvas1 = d3.select("#main1")
 		  .append( 'rect' )
 		  .attr( 'width', 15 )
 		  .attr( 'height', 12 )
-		  .style('fill','cyan')
+		  .style('fill','#ffd615')
 		  .attr( 'transform', 'translate(18,60)' );
 
 	  var label_brewery = legend2.append( 'g' )
