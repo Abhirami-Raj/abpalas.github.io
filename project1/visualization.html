@@ -27,14 +27,14 @@
 			stroke: white;
 		}
 		
-	div.tooltip { 
+	tooltipdiv.tooltip { 
     position: absolute;     
     text-align: center;     
-    width: 80px;          
-    height: 28px;         
+    width: 200px;          
+    height: 30px;         
     padding: 2px;       
     font: 12px sans-serif;    
-    background: lightsteelblue; 
+    background: #FFFF99; 
     border: 0px;    
     border-radius: 8px;     
     pointer-events: none;     
@@ -327,8 +327,6 @@ d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
 		});
 		});
 		
-		console.log(sdata);
-		
 		var color = d3.scale.category20b();
 		
 		gvictim.selectAll("rect")
@@ -427,7 +425,6 @@ d3.csv('data/deaths_age_sex.csv',function(deathagesex) {
    						break;
 
    					default:
-   					    console.log("errorrrr");
    				}
 
    			}
@@ -439,7 +436,6 @@ var totalgrouping = [{age: 5, male: age0m, female: age0f,age1:0,age2:10},
    			   {age: 70, male: age61m, female: age61f,age1:61,age2:80},
 			   {age: 85, male: age81m, female: age81f,age1:80,age2:"higher"}]
 
-console.log(totalgrouping);
 
 //for bar chart
 
@@ -642,7 +638,6 @@ function deathbyage1()
 		
 function deathbyage2(a)
 		{ 
-	     console.log('inside plot deaths2');
 	var death2 =  gvictim2.selectAll('rect')
 			    .data(deathagesex);
 		
@@ -789,12 +784,37 @@ var	canvas1 = d3.select("#main1")
 					
 					removedeathbyage1();
 					deathbyage2(count - 1);
+<<<<<<< HEAD
 		 
 					})
+=======
+>>>>>>> 6ef91218a645653fa00e4723dcbb1a133b941286
 					
+			        var tooltipdiv = d3.select("body").append("tooltipdiv") 
+						.attr("class", "tooltip")       
+						.style("opacity", 10);
+					
+						var length=0;
+
+						for (a=0; a<=i; a++){
+
+							length= length+ data[a].deaths;
+						}
+		  
+						tooltipdiv.transition()    
+									.duration(0)    
+									.style("opacity", .8) ;
+									
+						tooltipdiv.html(" No of deaths on "  +formatTime(d.date) +" : "  + d.deaths + "<br/>"+ " Total deaths till date : "+length)  
+									.style("left", (d3.event.pageX) + "px")   
+									.style("top", (d3.event.pageY - 28) + "px");
+							  
+						})
+				
 		.on("mouseout", function(d,i){
 					removedeathbyage2();
 					deathbyage1();
+					d3.select(".tooltip").remove();
 		  
 					});
 										
