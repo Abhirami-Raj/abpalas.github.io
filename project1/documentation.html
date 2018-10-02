@@ -1,104 +1,176 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Documentation</title>
- <link rel="shortcut icon" href="images/icon.png" />
-<!-- Bootstrap -->
-<link rel="stylesheet" href="css/bootstrap.min.css"/>
-<!-- FontAwesome -->
-<link rel="stylesheet" href="css/font-awesome.min.css"/>
-<!-- Animation -->
-<link rel="stylesheet" href="css/animate.css" />
-<!-- Main color style -->
-<link rel="stylesheet" href="css/red.css"/>
-<!-- Template styles-->
-<link rel="stylesheet" href="css/custom.css" />
-
+<head>
+<title>Project 1</title>
+<script type="text/javascript" src="./d3/d3.js"></script>
+<!--<script type="text/javascript" src="https://d3js.org//d3.v3.min.js"></script> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-  body{
-    
-    margin:80px 100px 80px 80px;
-  }
+    	text { 
+			font-family: Arial; 
+			font-size: 15px;
+		}
+		.axis path, .axis line {
+			fill: none;
+			stroke: black;
+			shape-rendering: crispEdges;
+		}
+		.tick text {
+			fill: gray;
+			font-size: 11px;
+		}
+
+		rect {
+			stroke: white;
+		}
+		
+	div.tooltip { 
+    position: absolute;     
+    text-align: center;     
+    width: 80px;          
+    height: 28px;         
+    padding: 2px;       
+    font: 12px sans-serif;    
+    background: lightsteelblue; 
+    border: 0px;    
+    border-radius: 8px;     
+    pointer-events: none;     
+}
+
+.bar1 {
+  fill: steelblue;
+}
+.bar2 {
+  fill: pink;
+}
+
+.bar1:hover {
+  fill: brown;
+}
+
+.bar2:hover {
+  fill: brown;
+}
 
 
-  img{
-    display: flex;
-    margin: auto;
-    text-align:center;
-  }
+.axis--x path {
+  display: none;
+}
 
+.svg {
+  position: absolute;
+  animation: panZoom 10s linear 1;
+}
 
+@keyframes panZoom {
+  0%   {transform: translateX(0) scale(1);}
+  100% {transform: translateX(1000px) scale(3);}
+}
 
-</style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+body, html {
+    height: 100%;
+    line-height: 1.8;
+}
+/* Full height image header */
+.bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("/w3images/mac.jpg");
+    min-height: 100%;
+}
+.w3-bar .w3-button {
+    padding: 16px;
+}
 
-  </head>
-
-<header id="section_header" class="navbar-fixed-top main-nav" role="banner">
-<div class="container">
-  <!-- <div class="row"> -->
-     <div class="navbar-header">
-               <img src="images/logo2.png" height="46" width="340" alt="">
-     </div><!--Navbar header End-->
-
-      <nav class="collapse navbar-collapse navigation" id="bs-example-navbar-collapse-1" role="navigation">
-        <ul class="nav navbar-nav navbar-right ">
-          <li > <a href="index.html" class="page-scroll">Project </a></li>
-          <li class="active"><a href="document.html"  class="page-scroll">Document</a> </li>
-          <li><a href="video.html" class="page-scroll" >Youtube Video</a> </li>
-        </ul>
-       </nav>
-    </div><!-- /.container-fluid -->
-</header>
+.legend rect {
+  fill: white;
+  fill-opacity: .85;
+  stroke: white;
+}
+.legend text {
+  font-size: 12px;
+}
+	</style>
+</head>
 
 <body>
 
-	<h3>About The Project</h3>
-	<p>
-	The London Broad Street cholera outbreak was a severe outbreak of cholera that occurred in 1854 near Broad Street in the Soho district of the City of Westminster, London, England. This outbreak, which killed 616 people, is best known for the physician John Snow's study of its causes and his hypothesis that germ-contaminated water was the source of cholera. It was the first time that anyone had established a link between contaminated water and cholera. The visualization provided compelling evidence and made the case for public health policies to improve water sanitation. The map remains one of the most remarkable and insightful visualizations ever created. 
-In this project, I have tried to recreate Dr. John Snow's map as an interactive version using today's tools of trade, D3. I have also added additional charts to the side of the map, as well as interface elements to make the data more interactive. A line chart is created plotting the no. of deaths of victims on particular date to identify the date on which the maximum deaths occurred. This line graph is an interactive one where each date gives the total no. of deaths on the main street map, showing male and female separately. In addition to the line chart, a bar graph has been added to represent the no. of deaths based on sex and age group.
-The objective of this project is to overcome the difficulty in the analysis of London Cholera Outbreak from the old paper map and to provide an easy and efficient interactive visualization to help people find the insights of this data.
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-card" id="myNavbar">
+    <a href="index.html" class="w3-bar-item w3-button w3-wide"><b>LONDON'S 1854 CHOLERA EPIDEMIC</b></a>
+    <!-- Right-sided navbar links -->
+    <div class="w3-right w3-hide-small">
+      <a href="index.html" class="w3-bar-item w3-button"><b>ABOUT PROJECT</b></a>
+	  <a href="visualization.html" class="w3-bar-item w3-button"><b>VISUALIZATION</b></a>
+      <a href="documentation.html" class="w3-bar-item w3-button"></i><b>DOCUMENTATION</b></a>
+      <a href="video.html" class="w3-bar-item w3-button"><b></i>VIDEO</b></a>
+    </div>
+    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-	</p>
-	
-	<h4>Design Process</h4>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+      <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<!-- documentation Section -->
+<div class="w3-container" style="padding:10px 16px" id="documentation">
+  <h3 class="w3-center">DOCUMENTATION</h3>
+  	<h4>Design Process</h4>
 	<p>
 	I first looked in to the datasets provided and tried to understand the requirements for the project. Next step was to list out what all steps have to be done as shown in fig1. I decided to plot the number of deaths based on the date in a line chart and was confused about plotting the number of deaths based on age group in a pie chart or bar chart. 
 	</p>
-	<img src="img/requirement_list.jpg" width="30%" height="30%" ></img></br>
-  <p>
-  After the layout design, I began to read D3 book <a href="http://chimera.labs.oreilly.com/books/1230000000345/index.html" class="page-scroll" >"Interactive Data Visualization for the Web with D3"(Scott Murray,  March 2013) </a> [2]. I used about 2-3 days to create the map using JSON, which is made by the python. I listed the requirements of the JSON data format and asked my undergraduate classmate <a href="http://chellynov.github.io" class="page-scroll" >Yihuang Cai</a>[3] to help me write the python. 
-  </p>
-  <p>
-  Since the JSON data was ready, I then began to complete the project requirements. As my Bachelor in software engineering, I did not care much about the visual but just focused on completing the function that I could do, just like this:
-  </p>
-  <img src="images/process2.png" width="70%" height="70%" ></img>
-  <p style="text-align: center;color: black;">Fg3.I was working on the chart function</p>
-  <p>
-  When the functions were done, I began to focus on visualization that I worked with my teammate Huang Fu. He helped me to choose a template on the web and helped me to modify my website. Actually, I am weak at visual design, so Huang helps me a lot! Then I modified the functions, layout, and color of the project page, made it looked in a comfortable way. As you can see, I did not follow my initial design, because I am a totally new web developer when I was doing my project, I found that the initial design is difficult for me to follow, so I changed my design in the coding procedure. Also, the Victor Mateevitsi’s website[1] helps me a lot to understand the functional requirements. 
-  </p>
-  <img src="images/process3.png" width="70%" height="70%"></img>
-  <p style="text-align: center;color: black;">Fg4. the final page</p>
+	<img src="img/requirement_list.jpg" width="30%" height="30%" ></img></br><p style="text-align: center;color: black;">Fg1.</p>
+    <p>
+    Then the layout design was considered and I tried a basic design that shows how the various contents should be aligned in the webpage. The D3 book by Scott Murray <a href="http://chimera.labs.oreilly.com/books/1230000000345/index.html" class="page-scroll" >"Interactive Data Visualization for the Web with D3"(Scott Murray,  March 2013) </a> helped me to understand the basics of d3 coding. The initial design lay outs are as shown in figures below. 
+    </p>
+    <img src="img/designlayout1.jpg" width="30%" height="30%" ></img></br><p style="text-align: start;color: black;">Fg2.</p>
+    <img src="img/designlayout2.jpg" width="30%" height="30%" ></img></br><p style="text-align: start;color: black;">Fg3.</p>
+    <p>
+    In order to get an idea of how the datasets are working, I used tableau to plot the data in the provided datasets and this helped me to understand the insights in the datasets to be more focused.
+    I could not plot all the datasets effectively as expected in tableau and so I analysed the data by reading through the datasets. Some of the results from tableau plotting is given below:
+    After having an idea of what should be plotted, I began to work on the plotting of streetmap.
+    </p>
+    <img src="img/bar_deaths_date.png" width="30%" height="30%" ></img></br><p style="text-align: center;color: black;">Fg4.</p>
 
-  <h3>Rationale of design choices</h3>
-  <h4>Death points color and shape</h4>
-  <p>
-  As the requirements mentioned “1.ability to easily see on the map whether each victim was male or female 2.ability to easily see on the map the age of each victim” and the exact meaning from professor, I need to show the data into female and male, and the age of each victim. So, I just chose a simple way that the female is circle, the male is rectangular, and used different color in saturation sequence to identify the age so that it can be identified both in sex and age. Also, the set of color has been tested by <a href="http://colororacle.org/" class="page-scroll" >colororacle</a>[4]. 
-  </p>
+    <h4>Rationale of design choices</h4>
+    <p>In order to start with the designing, I researched a lot in internet to get more ideas such as usage of color, shapes, orientations etc.</p>
+    <h4>Main street Map</h4>
+    <p>
+	  The position of the street map is set at left top as I understood that the street map is the most important part of the visualization. 
+	  I first choose black for the street coordinates, but then realized the difficulty in viewing the other constraints and changed the color in to gray.
+	  As the requirements suggested, I had to show the victims grouped based on gender (male and female) and age group.I decided to use color as a constrain to separate the gender and age groups.
+	  So, I just chose a simple way that the female is pink, the male is blue, and used different color in saturation sequence to identify the age so that the victims could be identified based on both sex and age.
+	  As I wanted the victims and water pumps to be easily identified, I used shape constrain to separate them. The pump is denoted as cicle filled with black to make them notable and the victims are denoted as small rectangles.
+	  Also, the set of color has been tested by <a href="http://colororacle.org/" class="page-scroll" >colororacle</a>[4]. 
+	</p>
 
-  <h4>Map show</h4>
-  <p>
-  I just modified the line map to make it looked more like a street map. 
-  </p>
+    <h4>Line Graph</h4>
+    <p>
+	  Initially the position of the line chart was kept just below the street map but, when I started working on transitions from line chart to street map, it became difficult to see it without scrolling. 
+	  In order to avoid difficulty, I changed the  position of the line graph to the right of street map. 
+	  The line is drawn with thick gray and the area inside the graph is filled black. Different dots are given according to date points for mouse over function so that when the user mouse overs on the dots, the number of deaths till that date is shown in the street map.
+	  The victims shown on street map as a mouse over transition is classified based on gender. The blue shade represents male and pink shade represends female.
+	  I choose these colors based on the normal consideration that pink is for women and blue is for men.
+	  A mouse out function is also given such that it shows the total victims on street map classified based on age with color variations.
+	  I have also added color variation for the dots on the line graph in such a way that as the no. of deaths increases, the blue color saturation increases.
+	 </p>
 
-  <h4>Pump shape</h4>
-  <p>
-  At the beginning, I just used bigger black rectangular to represent the pump. However, it looked terrible when adding death points as the Fg3 shows. So I found another picture which might be kind of representative pump and simple shape icon to replace the rectangular(The most typical one as Fg5 shows, I did not choose because I knew a classmate is using). When there is much other graphical information on the map, the secondary information in a simple and different color range to help the user filter out this secondary information in order to focus on important information and reduce visual interference.
-  </p>
-  <img src="images/pump.png" width="40%" height="40%"></img>
+	 <h4>Bar Graph</h4>
+     <p>
+  
+     </p>
+     <img src="images/pump.png" width="40%" height="40%"></img>
 
-  <h4>Buildings color and street name</h4>
+    <h4>Buildings color and street name</h4>
   <p>
   As the first B requirement “more data to the map - major street names and the location of the brewery and the work house”, I think these are not the main information that uses would like to know initially, so the street name I made it small with thin white stroke,make it easy to catch but not in detail, and the buildings color in totally different color from the death points, and the building name in white color which reduces the visual interference.
   </p>
@@ -199,6 +271,8 @@ My main function codes are from the D3 book[2], the stackoverflow[5], the bl.ock
 <p>[8]China Webmaster(style template)</br>
 <a href="http://sc.chinaz.com" class="page-scroll" >http://sc.chinaz.com</a>  
 </p>
-
-
+  
+  </div>
+			
 </body>
+</html>					
